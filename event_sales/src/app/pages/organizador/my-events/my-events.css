@@ -1,0 +1,259 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.page-title {
+  font: var(--font-display);
+}
+
+.page-subtitle {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.btn {
+  height: 52px;
+  padding: 0 24px;
+  font: var(--font-button);
+  border-radius: var(--radius-md);
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search {
+  width: 320px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+}
+
+.search-icon {
+  margin: 0 10px 0 16px;
+  display: block;
+}
+
+mat-chip-option {
+  --mat-chip-container-shape-radius: 20px;
+  --mat-chip-container-height: 38px;
+  --mat-chip-elevated-container-color: var(--bg-surface);
+  --mat-chip-outline-color: var(--border-default);
+  --mat-chip-outline-width: 1px;
+  --mat-chip-label-text-color: var(--text-primary);
+  --mat-chip-label-text-font: var(--font-small);
+  --mat-chip-elevated-selected-container-color: var(--primary-default);
+  --mat-chip-selected-label-text-color: var(--text-on-primary);
+}
+
+.table-card {
+  overflow-x: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+}
+
+table {
+  width: 100%;
+  min-width: 760px;
+  background: transparent;
+}
+
+th.mat-mdc-header-cell {
+  height: 44px;
+  padding: 0 24px;
+  background: var(--bg-base);
+  font: var(--font-caption);
+  color: var(--text-muted);
+}
+
+td.mat-mdc-cell {
+  height: 76px;
+  padding: 0 24px;
+  font: var(--font-small);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.mat-column-categoria { width: 130px; }
+.mat-column-fecha { width: 100px; }
+.mat-column-vendidas { width: 170px; }
+.mat-column-ciudad { width: 120px; }
+.mat-column-precio { width: 110px; }
+.mat-column-acciones { width: 90px; }
+
+.evento-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.evento-thumb {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--border-default);
+}
+
+.evento-nombre {
+  font: var(--font-button);
+}
+
+.vendidas-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 120px;
+}
+
+mat-progress-bar {
+  --mat-progress-bar-active-indicator-color: var(--primary-default);
+  --mat-progress-bar-track-color: var(--bg-elevated);
+  --mat-progress-bar-active-indicator-height: 6px;
+  --mat-progress-bar-track-height: 6px;
+  --mat-progress-bar-track-shape: 3px;
+}
+
+.editar {
+  color: var(--accent-cyan);
+}
+
+@media (max-width: 900px) {
+  .page-title {
+    font: var(--font-h1);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    width: 100%;
+  }
+}
+
+.api-error {
+  margin: 0;
+  font: var(--font-small);
+  color: var(--state-error);
+}
+
+.empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+img.evento-thumb {
+  object-fit: cover;
+}
+
+@media (max-width: 700px) {
+  .table-card {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+  }
+
+  table {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  tr.mat-mdc-header-row {
+    display: none;
+  }
+
+  tr.mat-mdc-row {
+    display: grid;
+    width: 100%;
+    margin-bottom: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+    height: auto;
+    padding: 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: 14px;
+  }
+
+  td.mat-mdc-cell {
+    height: auto;
+    padding: 0;
+    border: 0;
+    width: auto !important;
+  }
+
+  td.mat-column-evento,
+  td.mat-column-vendidas {
+    grid-column: 1 / -1;
+  }
+
+  td.mat-column-categoria::before { content: 'Categoría'; }
+  td.mat-column-fecha::before { content: 'Fecha'; }
+  td.mat-column-ciudad::before { content: 'Ciudad'; }
+  td.mat-column-precio::before { content: 'Precio base'; }
+
+  td.mat-column-categoria::before,
+  td.mat-column-fecha::before,
+  td.mat-column-ciudad::before,
+  td.mat-column-precio::before {
+    display: block;
+    font: var(--font-caption);
+    color: var(--text-muted);
+  }
+
+  .vendidas-cell {
+    width: 100%;
+  }
+
+  td.mat-column-acciones {
+    grid-column: 1 / -1;
+  }
+
+  .editar {
+    display: block;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .search {
+    width: 100%;
+  }
+}

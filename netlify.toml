@@ -1,0 +1,8 @@
+[build]
+  base = "event_sales"
+  command = "node preparar-netlify.mjs && npm run build"
+  publish = "dist/eventsales/browser"
+
+[build.environment]
+  NODE_VERSION = "24"
+  NG_CLI_ANALYTICS = "false"

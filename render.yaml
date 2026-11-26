@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: eventsales-gemini-api
+    runtime: docker
+    plan: free
+    region: oregon
+    rootDir: event-api
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/home
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: ai,render
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.1-flash-lite
+      - key: GEMINI_TTS_MODEL
+        value: gemini-3.1-flash-tts-preview
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JAVA_TOOL_OPTIONS
+        value: "-Xmx256m -Xss512k -XX:+UseSerialGC -XX:ActiveProcessorCount=2"
+      - key: PGHOST
+        fromDatabase:
+          name: eventsales-db
+          property: host
+      - key: DB_USERNAME
+        fromDatabase:
+          name: eventsales-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: eventsales-db
+          property: password
+databases:
+  - name: eventsales-db
+    databaseName: event_sales
+    user: eventsales
+    postgresMajorVersion: "16"
+    plan: free
+    region: oregon
+    ipAllowList: []

@@ -1,0 +1,69 @@
+name: eventsales-local
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: event_sales
+      POSTGRES_USER: eventsales
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Ejecuta el configurador de tu sistema}
+      TZ: America/Lima
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "eventsales", "-d", "event_sales"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+
+  api:
+    build: ./event-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/event_sales
+      DB_USERNAME: eventsales
+      DB_PASSWORD: ${DB_PASSWORD:?Ejecuta el configurador de tu sistema}
+      JWT_SECRET: ${JWT_SECRET:?Ejecuta el configurador de tu sistema}
+      SPRING_PROFILES_ACTIVE: ${EVENTSALES_PROFILE:-local}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.1-flash-lite}
+      GEMINI_TTS_MODEL: ${GEMINI_TTS_MODEL:-gemini-3.1-flash-tts-preview}
+      CORS_ORIGINS: http://localhost:${WEB_PORT:-4200},http://127.0.0.1:${WEB_PORT:-4200}
+      UPLOAD_DIR: /app/uploads
+      TZ: America/Lima
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    volumes:
+      - ./datos/imagenes:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/home"]
+      interval: 8s
+      timeout: 6s
+      start_period: 60s
+      retries: 30
+
+  web:
+    build: ./event_sales
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      API_TARGET: http://api:8080
+      NG_CLI_ANALYTICS: "false"
+    ports:
+      - "127.0.0.1:${WEB_PORT:-4200}:4200"
+    volumes:
+      - ./event_sales/src:/app/src:ro
+      - ./event_sales/public:/app/public:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4200/api/home').then(async r => { const d = await r.json(); if (!r.ok || !Array.isArray(d.categories)) process.exit(1); }).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 8s
+      start_period: 50s
+      retries: 20
+
+volumes:
+  postgres_data:

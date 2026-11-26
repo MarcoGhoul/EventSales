@@ -1,0 +1,5 @@
+.env
+.env.tmp.*
+.DS_Store
+event-api/uploads/
+datos/
